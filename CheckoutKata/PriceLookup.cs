@@ -17,7 +17,7 @@ namespace CheckoutKata
             _perUnitProducts[productName] = price;
         }
 
-        public double PricePerUnit(string productName)
+        public double PricePerUnit(string productName, int units)
         {
             if (!_perUnitProducts.ContainsKey(productName))
             {
@@ -29,7 +29,7 @@ namespace CheckoutKata
             }
 
             var markdown = _markdowns.GetValueOrDefault(productName, 0);
-            return _perUnitProducts[productName] - markdown;
+            return (_perUnitProducts[productName] * units) - markdown;
         }
 
         public void AddPerPoundProduct(string productName, double price)

@@ -13,14 +13,14 @@ namespace CheckoutKataTests
         public void AddSoup()
         {
             _prices.AddPerUnitProduct("Soup", 1.89);
-            _prices.PricePerUnit("Soup").Should().Be(1.89);
+            _prices.PricePerUnit("Soup", 2).Should().Be(3.78);
         }
         
         [Fact]
         public void AddPie()
         {
             _prices.AddPerUnitProduct("Pie", 6.99);
-            _prices.PricePerUnit("Pie").Should().Be(6.99);
+            _prices.PricePerUnit("Pie", 1).Should().Be(6.99);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace CheckoutKataTests
         [Fact]
         public void UnknownPerUnitProduct()
         {
-            void Act() => _prices.PricePerUnit("unknown per unit");
+            void Act() => _prices.PricePerUnit("unknown per unit", 1);
             var exception = Assert.Throws<ArgumentException>((Action) Act);
             exception.Message.Should().Be("[unknown per unit] is not a valid product");
         }
@@ -58,7 +58,7 @@ namespace CheckoutKataTests
         {
             _prices.AddPerUnitProduct("Soup", 1.89);
             _prices.AddPerUnitProduct("Soup", 1.99);
-            _prices.PricePerUnit("Soup").Should().Be(1.99);
+            _prices.PricePerUnit("Soup", 1).Should().Be(1.99);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace CheckoutKataTests
         public void WrongApiForPerPound()
         {
             _prices.AddPerPoundProduct("Ground Beef", 5.99);
-            void Act() => _prices.PricePerUnit("Ground Beef");
+            void Act() => _prices.PricePerUnit("Ground Beef", 1);
             var exception = Assert.Throws<ArgumentException>(Act);
             exception.Message.Should().Be("Ground Beef is priced per pound, not per unit");
         }

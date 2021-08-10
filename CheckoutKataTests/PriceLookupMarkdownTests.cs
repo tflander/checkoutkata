@@ -13,7 +13,7 @@ namespace CheckoutKataTests
         {
             _prices.AddPerUnitProduct("Soup", 1.99);
             _prices.AddMarkdown("Soup", 0.50);
-            _prices.PricePerUnit("Soup").Should().Be(1.49);
+            _prices.PricePerUnit("Soup", 1).Should().Be(1.49);
         }
 
         [Fact]
