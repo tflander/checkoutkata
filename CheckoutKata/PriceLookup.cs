@@ -1,64 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using CheckoutKataTests;
 
 namespace CheckoutKata
 {
     public class PriceLookup
     {
-        private Dictionary<string, double> _perUnitProducts = new Dictionary<string, double>();
-        private Dictionary<string, double> _perPoundProducts = new Dictionary<string, double>();
-        private Dictionary<string, double> _markdowns = new Dictionary<string, double>();
-        public void AddPerUnitProduct(string productName, double price)
+        private readonly Dictionary<string, double> _prices = new();
+        private readonly Dictionary<string, double> _markdowns = new();
+        private readonly Dictionary<string, ISpecial> _specials = new();
+        public void AddProduct(string productName, double price)
         {
-            if (_perPoundProducts.ContainsKey(productName))
-            {
-                throw new ArgumentException($"{productName} is already priced per pound.  Cannot price per unit.");
-            }
-            _perUnitProducts[productName] = price;
+            _prices[productName] = price;
         }
 
-        public double PricePerUnit(string productName, int units)
+        public double Price(string productName, int unitsOrPounds)
         {
-            if (!_perUnitProducts.ContainsKey(productName))
+            if (!_prices.ContainsKey(productName))
             {
-                if (_perPoundProducts.ContainsKey(productName))
-                {
-                    throw new ArgumentException($"{productName} is priced per pound, not per unit");
-                }
                 throw new ArgumentException($"[{productName}] is not a valid product");
             }
 
-            var markdown = _markdowns.GetValueOrDefault(productName, 0);
-            return (_perUnitProducts[productName] * units) - markdown;
-        }
-
-        public void AddPerPoundProduct(string productName, double price)
-        {
-            if (_perUnitProducts.ContainsKey(productName))
+            if (_specials.ContainsKey(productName))
             {
-                throw new ArgumentException($"{productName} is already priced per unit.  Cannot price per pound.");
+                return _specials[productName].Price(unitsOrPounds, _prices[productName]);
             }
-            _perPoundProducts[productName] = price;
-        }
 
-        public double PricePerPound(string productName, int pounds)
-        {
-            if (!_perPoundProducts.ContainsKey(productName))
-            {
-                if (_perUnitProducts.ContainsKey(productName))
-                {
-                    throw new ArgumentException($"{productName} is priced per unit, not per pound");
-                }
-                throw new ArgumentException($"[{productName}] is not a valid product");
-            }
-            
             var markdown = _markdowns.GetValueOrDefault(productName, 0);
-            return (_perPoundProducts[productName] - markdown) * pounds;
+            return (_prices[productName] * unitsOrPounds) - markdown;
         }
-
+        
         public void AddMarkdown(string productName, double priceReduction)
         {
             _markdowns[productName] = priceReduction;
+        }
+
+        public void AddSpecial(ISpecial special)
+        {
+            _specials[special.ProductName] = special;
         }
     }
 }
