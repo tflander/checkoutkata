@@ -11,11 +11,13 @@ namespace CheckoutKataTests
 
     public class Bogo : ISpecial
     {
+        private readonly int _requiredQuantity;
         public double Discount { get; }
         public string ProductName { get; }
 
-        public Bogo(string productName, double discount = 1)
+        public Bogo(string productName, double discount = 1, int requiredQuantity=1)
         {
+            _requiredQuantity = requiredQuantity;
             ProductName = productName;
             Discount = discount;
         }
@@ -23,7 +25,7 @@ namespace CheckoutKataTests
         public int Price(int quantityRequested, int basePriceInCents)
         {
             var baseTotal = basePriceInCents * quantityRequested;
-            var discount = (int)Math.Round(Math.Floor((double)quantityRequested / 2) * basePriceInCents * Discount);
+            var discount = (int)Math.Round(Math.Floor((double)quantityRequested / (_requiredQuantity + 1)) * basePriceInCents * Discount);
             return baseTotal - discount;
         }
     }

@@ -18,7 +18,6 @@ namespace CheckoutKataTests
         
         /*
          * Along with the markdowns, a set of specials are advertised each week.
-         * For example, the soup could be advertised  "three cans for $5.00."
          * Sometimes limits are placed on these specials. For example, "Buy two, get one free. Limit 6." 
          */
 
@@ -48,12 +47,21 @@ namespace CheckoutKataTests
             _prices.AddSpecial(bogo);
             _prices.PriceInCents("Soup", 3).Should().Be(398);
         }
+
+        [Fact]
+        public void PurchaseFourForBuyThreeGetOneFree()
+        {
+            _prices.AddProduct("Soup", 199);
+            var bogo = new Bogo("Soup", requiredQuantity: 3);
+            _prices.AddSpecial(bogo);
+            _prices.PriceInCents("Soup", 4).Should().Be(597);
+        }
         
         [Fact]
         public void PurchaseThreeForBuyOneGetOneHalfOff()
         {
             _prices.AddProduct("Soup", 199);
-            var bogo = new Bogo("Soup", 0.50);
+            var bogo = new Bogo("Soup", discount: 0.50);
             _prices.AddSpecial(bogo);
             _prices.PriceInCents("Soup", 3).Should().Be(497);
         }
