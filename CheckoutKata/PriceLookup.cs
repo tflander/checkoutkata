@@ -7,6 +7,7 @@ namespace CheckoutKata
     {
         private Dictionary<string, double> _perUnitProducts = new Dictionary<string, double>();
         private Dictionary<string, double> _perPoundProducts = new Dictionary<string, double>();
+        private Dictionary<string, double> _markdowns = new Dictionary<string, double>();
         public void AddPerUnitProduct(string productName, double price)
         {
             if (_perPoundProducts.ContainsKey(productName))
@@ -26,7 +27,9 @@ namespace CheckoutKata
                 }
                 throw new ArgumentException($"[{productName}] is not a valid product");
             }
-            return _perUnitProducts[productName];
+
+            var markdown = _markdowns.GetValueOrDefault(productName, 0);
+            return _perUnitProducts[productName] - markdown;
         }
 
         public void AddPerPoundProduct(string productName, double price)
@@ -49,7 +52,13 @@ namespace CheckoutKata
                 throw new ArgumentException($"[{productName}] is not a valid product");
             }
             
-            return _perPoundProducts[productName] * pounds;
+            var markdown = _markdowns.GetValueOrDefault(productName, 0);
+            return (_perPoundProducts[productName] - markdown) * pounds;
+        }
+
+        public void AddMarkdown(string productName, double priceReduction)
+        {
+            _markdowns[productName] = priceReduction;
         }
     }
 }

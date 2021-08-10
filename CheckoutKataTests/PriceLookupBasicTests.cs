@@ -5,7 +5,7 @@ using FluentAssertions;
 
 namespace CheckoutKataTests
 {
-    public class PriceLookupTests
+    public class PriceLookupBasicTests
     {
         private readonly PriceLookup _prices = new();
         
