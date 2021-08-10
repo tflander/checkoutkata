@@ -11,9 +11,9 @@ namespace CheckoutKataTests
         [Fact]
         public void PerUnitProductMarkdown()
         {
-            _prices.AddProduct("Soup", 1.99);
-            _prices.AddMarkdown("Soup", 0.50);
-            _prices.Price("Soup", 1).Should().Be(1.49);
+            _prices.AddProduct("Soup", 199);
+            _prices.AddMarkdown("Soup", 50);
+            _prices.PriceInCents("Soup", 1).Should().Be(149);
         }
         
         /*
@@ -25,64 +25,64 @@ namespace CheckoutKataTests
         [Fact]
         public void PurchaseTwoForBuyOneGetOneFree()
         {
-            _prices.AddProduct("Soup", 1.99);
+            _prices.AddProduct("Soup", 199);
             var bogo = new Bogo("Soup");
             _prices.AddSpecial(bogo);
-            _prices.Price("Soup", 2).Should().Be(1.99);
+            _prices.PriceInCents("Soup", 2).Should().Be(199);
         }
         
         [Fact]
         public void PurchaseOneForBuyOneGetOneFree()
         {
-            _prices.AddProduct("Soup", 1.99);
+            _prices.AddProduct("Soup", 199);
             var bogo = new Bogo("Soup");
             _prices.AddSpecial(bogo);
-            _prices.Price("Soup", 1).Should().Be(1.99);
+            _prices.PriceInCents("Soup", 1).Should().Be(199);
         }
         
         [Fact]
         public void PurchaseThreeForBuyOneGetOneFree()
         {
-            _prices.AddProduct("Soup", 1.99);
+            _prices.AddProduct("Soup", 199);
             var bogo = new Bogo("Soup");
             _prices.AddSpecial(bogo);
-            _prices.Price("Soup", 3).Should().BeApproximately(3.98, 0.001);
+            _prices.PriceInCents("Soup", 3).Should().Be(398);
         }
         
         [Fact]
         public void PurchaseThreeForBuyOneGetOneHalfOff()
         {
-            _prices.AddProduct("Soup", 1.99);
+            _prices.AddProduct("Soup", 199);
             var bogo = new Bogo("Soup", 0.50);
             _prices.AddSpecial(bogo);
-            _prices.Price("Soup", 3).Should().BeApproximately(4.98, 0.001);
+            _prices.PriceInCents("Soup", 3).Should().Be(497);
         }
 
         [Fact]
         public void PurchaseThreeForSpecialThreeForFive()
         {
-            _prices.AddProduct("Soup", 1.99);
-            var bulkPrice = new BulkPrice("Soup", 3, 5.00);
+            _prices.AddProduct("Soup", 199);
+            var bulkPrice = new BulkPrice("Soup", 3, 500);
             _prices.AddSpecial(bulkPrice);
-            _prices.Price("Soup", 3).Should().BeApproximately(5.00, 0.001);
+            _prices.PriceInCents("Soup", 3).Should().Be(500);
         }
 
         [Fact]
         public void PurchaseTwoForSpecialThreeForFive()
         {
-            _prices.AddProduct("Soup", 1.99);
-            var bulkPrice = new BulkPrice("Soup", 3, 5.00);
+            _prices.AddProduct("Soup", 199);
+            var bulkPrice = new BulkPrice("Soup", 3, 500);
             _prices.AddSpecial(bulkPrice);
-            _prices.Price("Soup", 2).Should().BeApproximately(3.98, 0.001);
+            _prices.PriceInCents("Soup", 2).Should().Be(398);
         }
         
         [Fact]
         public void PurchaseSevenForSpecialThreeForFive()
         {
-            _prices.AddProduct("Soup", 1.99);
-            var bulkPrice = new BulkPrice("Soup", 3, 5.00);
+            _prices.AddProduct("Soup", 199);
+            var bulkPrice = new BulkPrice("Soup", 3, 500);
             _prices.AddSpecial(bulkPrice);
-            _prices.Price("Soup", 7).Should().BeApproximately(11.99, 0.001);
+            _prices.PriceInCents("Soup", 7).Should().Be(1199);
         }
     }
 }

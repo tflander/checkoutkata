@@ -6,7 +6,7 @@ namespace CheckoutKataTests
     public interface ISpecial
     {
         public string ProductName { get; }
-        double Price(int quantityRequested, double basePrice);
+        int Price(int quantityRequested, int basePrice);
     }
 
     public class Bogo : ISpecial
@@ -20,10 +20,10 @@ namespace CheckoutKataTests
             Discount = discount;
         }
         
-        public double Price(int quantityRequested, double basePrice)
+        public int Price(int quantityRequested, int basePriceInCents)
         {
-            var baseTotal = basePrice * quantityRequested;
-            var discount = Math.Floor((double)quantityRequested / 2) * basePrice * Discount;
+            var baseTotal = basePriceInCents * quantityRequested;
+            var discount = (int)Math.Round(Math.Floor((double)quantityRequested / 2) * basePriceInCents * Discount);
             return baseTotal - discount;
         }
     }
@@ -31,21 +31,21 @@ namespace CheckoutKataTests
     public class BulkPrice : ISpecial
     {
         private readonly int _quantity;
-        private readonly double _price;
+        private readonly int _priceInCents;
 
-        public BulkPrice(string productName, int quantity, double price)
+        public BulkPrice(string productName, int quantity, int priceInCents)
         {
             _quantity = quantity;
-            _price = price;
+            _priceInCents = priceInCents;
             ProductName = productName;
         }
 
         public string ProductName { get; }
-        public double Price(int quantityRequested, double basePrice)
+        public int Price(int quantityRequested, int basePrice)
         {
             var bulkUnitsRequested = Math.Floor((double)quantityRequested / _quantity);
             var nonBulkUnits = quantityRequested - bulkUnitsRequested * _quantity;
-            return _price * bulkUnitsRequested + nonBulkUnits * basePrice;
+            return (int)(_priceInCents * bulkUnitsRequested + nonBulkUnits * basePrice);
         }
     }
 }

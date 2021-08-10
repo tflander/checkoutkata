@@ -12,28 +12,28 @@ namespace CheckoutKataTests
         [Fact]
         public void AddSoup()
         {
-            _prices.AddProduct("Soup", 1.89);
-            _prices.Price("Soup", 2).Should().Be(3.78);
+            _prices.AddProduct("Soup", 189);
+            _prices.PriceInCents("Soup", 2).Should().Be(378);
         }
         
         [Fact]
         public void AddPie()
         {
-            _prices.AddProduct("Pie", 6.99);
-            _prices.Price("Pie", 1).Should().Be(6.99);
+            _prices.AddProduct("Pie", 699);
+            _prices.PriceInCents("Pie", 1).Should().Be(699);
         }
 
         [Fact]
         public void AddBeef()
         {
-            _prices.AddProduct("Ground Beef", 5.99);
-            _prices.Price("Ground Beef", 2).Should().Be(11.98);
+            _prices.AddProduct("Ground Beef", 599);
+            _prices.PriceInCents("Ground Beef", 2).Should().Be(1198);
         }
         
         [Fact]
         public void UnknownProduct()
         {
-            void Act() => _prices.Price("unknown per unit", 1);
+            void Act() => _prices.PriceInCents("unknown per unit", 1);
             var exception = Assert.Throws<ArgumentException>((Action) Act);
             exception.Message.Should().Be("[unknown per unit] is not a valid product");
         }
@@ -41,9 +41,9 @@ namespace CheckoutKataTests
         [Fact]
         public void PriceUpdate()
         {
-            _prices.AddProduct("Soup", 1.89);
-            _prices.AddProduct("Soup", 1.99);
-            _prices.Price("Soup", 1).Should().Be(1.99);
+            _prices.AddProduct("Soup", 189);
+            _prices.AddProduct("Soup", 199);
+            _prices.PriceInCents("Soup", 1).Should().Be(199);
         }
         
     }

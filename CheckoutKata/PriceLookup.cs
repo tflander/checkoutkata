@@ -6,15 +6,15 @@ namespace CheckoutKata
 {
     public class PriceLookup
     {
-        private readonly Dictionary<string, double> _prices = new();
-        private readonly Dictionary<string, double> _markdowns = new();
+        private readonly Dictionary<string, int> _prices = new();
+        private readonly Dictionary<string, int> _markdowns = new();
         private readonly Dictionary<string, ISpecial> _specials = new();
-        public void AddProduct(string productName, double price)
+        public void AddProduct(string productName, int priceInCents)
         {
-            _prices[productName] = price;
+            _prices[productName] = priceInCents;
         }
 
-        public double Price(string productName, int unitsOrPounds)
+        public int PriceInCents(string productName, int unitsOrPounds)
         {
             if (!_prices.ContainsKey(productName))
             {
@@ -30,7 +30,7 @@ namespace CheckoutKata
             return (_prices[productName] * unitsOrPounds) - markdown;
         }
         
-        public void AddMarkdown(string productName, double priceReduction)
+        public void AddMarkdown(string productName, int priceReduction)
         {
             _markdowns[productName] = priceReduction;
         }
